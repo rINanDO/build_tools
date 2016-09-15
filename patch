@@ -1,25 +1,24 @@
 #!/bin/bash
 
-cd ..
 
 COUNT=0
 CURRENT_DIR="$PWD"
-PD="build_tools/patches"
+PD="$CURRENT_DIR/patches"
 PATCHES=(
 'build				build.patch'
-'frameworks/av			frameworks_av.patch'
-'frameworks/base		frameworks_base.patch'
-'frameworks/native		frameworks_native.patch'
-'frameworks/opt/net/wifi	frameworks_opt_net_wifi.patch'
-'frameworks/opt/telephony	frameworks_opt_telephony.patch'
-'hardware/broadcom/libbt	hardware_broadcom_libbt.patch'
-'hardware/libhardware_legacy	hardware_libhardware_legacy.patch'
-'packages/apps/Camera2		packages_apps_Camera2.patch'
-'packages/apps/Launcher3	packages_apps_Launcher3.patch'
-'packages/apps/Settings		packages_apps_Settings.patch'
-'packages/inputmethods/LatinIME packages_inputmethods_LatinIME.patch'
-'packages/services/Telephony	packages_services_Telephony.patch'
-'system/core			system_core.patch'
+#'frameworks/av			frameworks_av.patch'
+#'frameworks/base		frameworks_base.patch'
+#'frameworks/native		frameworks_native.patch'
+#'frameworks/opt/net/wifi	frameworks_opt_net_wifi.patch'
+#'frameworks/opt/telephony	frameworks_opt_telephony.patch'
+#'hardware/broadcom/libbt	hardware_broadcom_libbt.patch'
+#'hardware/libhardware_legacy	hardware_libhardware_legacy.patch'
+#'packages/apps/Camera2		packages_apps_Camera2.patch'
+#'packages/apps/Launcher3	packages_apps_Launcher3.patch'
+#'packages/apps/Settings		packages_apps_Settings.patch'
+#'packages/inputmethods/LatinIME packages_inputmethods_LatinIME.patch'
+#'packages/services/Telephony	packages_services_Telephony.patch'
+# DONE 'system/core			system_core.patch'
 )
 
 while [ "x${PATCHES[COUNT]}" != "x" ]
@@ -27,10 +26,12 @@ do
 	CURRENT="${PATCHES[COUNT]}"
 	FOLDER=`echo "$CURRENT" | awk '{print $1}'`
 	PATCH=`echo "$CURRENT" | awk '{print $2}'`
-
+	cd ..
 	cd "$FOLDER"
 	echo Patching "$FOLDER" ...
-	git apply "$CURRENT_DIR/$PD/$PATCH"
+#	git apply "$PD/$PATCH"
+	git am --signoff "$PD/$PATCH"
+
 	cd "$CURRENT_DIR"
 
 	COUNT=$(($COUNT + 1))
