@@ -1,4 +1,4 @@
-From 3d8fb64514377b22ca09d0e6bc774feab2d7d954 Mon Sep 17 00:00:00 2001
+From 7d3dbde64a1645b5edfcf845dc605e4a54cb06a2 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Sat, 15 Nov 2014 14:50:29 +0700
 Subject: [PATCH 1/5] TelephonyManager: set properties in Broadcom-style as
@@ -12,10 +12,10 @@ Change-Id: I475fdd164b3316720387fefb14a3e12fbc262b39
  1 file changed, 20 insertions(+), 43 deletions(-)
 
 diff --git a/telephony/java/android/telephony/TelephonyManager.java b/telephony/java/android/telephony/TelephonyManager.java
-index 0c0c004..e49cbce 100644
+index b6700d87640..17fb918603c 100644
 --- a/telephony/java/android/telephony/TelephonyManager.java
 +++ b/telephony/java/android/telephony/TelephonyManager.java
-@@ -3539,49 +3539,19 @@ public class TelephonyManager {
+@@ -3743,49 +3743,19 @@ public class TelephonyManager {
       * @hide
       */
      public static void setTelephonyProperty(int phoneId, String property, String value) {
@@ -70,7 +70,7 @@ index 0c0c004..e49cbce 100644
      }
  
      /**
-@@ -3678,15 +3648,22 @@ public class TelephonyManager {
+@@ -3882,15 +3852,22 @@ public class TelephonyManager {
       * @hide
       */
      public static String getTelephonyProperty(int phoneId, String property, String defaultVal) {
@@ -102,10 +102,10 @@ index 0c0c004..e49cbce 100644
  
      /** @hide */
 -- 
-2.10.1
+2.11.0
 
 
-From ae9626184566a16ba91a14f9b53659f4eb9f6789 Mon Sep 17 00:00:00 2001
+From 8dc8e4773f061eb10c91f5fba489b8a411c392c0 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Sat, 15 Nov 2014 14:50:29 +0700
 Subject: [PATCH 2/5] Camera: HACK: i9082: API hacks
@@ -123,7 +123,7 @@ Change-Id: I929feffa4f79c69e9d7be7d1acacb3c228280bfe
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/core/java/android/hardware/camera2/legacy/LegacyExceptionUtils.java b/core/java/android/hardware/camera2/legacy/LegacyExceptionUtils.java
-index 93d6001..5d7400a 100644
+index 93d6001c08d..5d7400a4873 100644
 --- a/core/java/android/hardware/camera2/legacy/LegacyExceptionUtils.java
 +++ b/core/java/android/hardware/camera2/legacy/LegacyExceptionUtils.java
 @@ -116,7 +116,7 @@ public class LegacyExceptionUtils {
@@ -136,7 +136,7 @@ index 93d6001..5d7400a 100644
          } else if (errorFlag == -EOPNOTSUPP) {
              errorCode = ICameraService.ERROR_DEPRECATED_HAL;
 diff --git a/core/java/android/hardware/camera2/legacy/LegacyMetadataMapper.java b/core/java/android/hardware/camera2/legacy/LegacyMetadataMapper.java
-index bb0a042..2fd464e 100644
+index bb0a0427990..2fd464e06da 100644
 --- a/core/java/android/hardware/camera2/legacy/LegacyMetadataMapper.java
 +++ b/core/java/android/hardware/camera2/legacy/LegacyMetadataMapper.java
 @@ -1151,7 +1151,7 @@ public class LegacyMetadataMapper {
@@ -149,7 +149,7 @@ index bb0a042..2fd464e 100644
              case Camera.Parameters.ANTIBANDING_60HZ: {
                  return CONTROL_AE_ANTIBANDING_MODE_60HZ;
 diff --git a/core/java/android/hardware/camera2/legacy/LegacyRequestMapper.java b/core/java/android/hardware/camera2/legacy/LegacyRequestMapper.java
-index 2e06d5f..1a3db4e 100644
+index 2e06d5fb3b6..1a3db4e3ccc 100644
 --- a/core/java/android/hardware/camera2/legacy/LegacyRequestMapper.java
 +++ b/core/java/android/hardware/camera2/legacy/LegacyRequestMapper.java
 @@ -620,7 +620,7 @@ public class LegacyRequestMapper {
@@ -162,68 +162,13 @@ index 2e06d5f..1a3db4e 100644
              default: {
                  return null;
 -- 
-2.10.1
+2.11.0
 
 
-From 3acca28641d538ad753fb76fa08d6c3a4ed9cf69 Mon Sep 17 00:00:00 2001
-From: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
-Date: Mon, 4 Nov 2013 02:22:43 +0000
-Subject: [PATCH 3/5] Forward port Samsung STK support (frameworks/base)
-
-[pawitp: port to Lollipop]
-
-Change-Id: I08d169bc466df290fca838b09f6b0fbea2ac82a8
----
- core/res/res/values/config.xml                                  | 3 +++
- core/res/res/values/symbols.xml                                 | 1 +
- telephony/java/com/android/internal/telephony/RILConstants.java | 2 ++
- 3 files changed, 6 insertions(+)
-
-diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
-index 69e79d0..9de10dd 100755
---- a/core/res/res/values/config.xml
-+++ b/core/res/res/values/config.xml
-@@ -2705,6 +2705,9 @@
-     <string-array name="config_disabledComponents" translatable="false">
-     </string-array>
- 
-+    <!-- Boolean to enable stk functionality on Samsung phones -->
-+    <bool name="config_samsung_stk">false</bool>
-+
-     <!-- The list of components which should be forced to be enabled. -->
-     <string-array name="config_forceEnabledComponents" translatable="false">
-     </string-array>
-diff --git a/core/res/res/values/symbols.xml b/core/res/res/values/symbols.xml
-index 0b20352..acdfe6c 100644
---- a/core/res/res/values/symbols.xml
-+++ b/core/res/res/values/symbols.xml
-@@ -2686,6 +2686,7 @@
- 
-   <!-- Config.xml entries -->
-   <java-symbol type="bool" name="config_show_cmIMESwitcher"/>
-+  <java-symbol type="bool" name="config_samsung_stk" />
- 
-   <!-- Developer settings - Kill app back press -->
-   <java-symbol type="string" name="app_killed_message" />
-diff --git a/telephony/java/com/android/internal/telephony/RILConstants.java b/telephony/java/com/android/internal/telephony/RILConstants.java
-index d06df49..26bcde0 100644
---- a/telephony/java/com/android/internal/telephony/RILConstants.java
-+++ b/telephony/java/com/android/internal/telephony/RILConstants.java
-@@ -469,4 +469,6 @@ cat include/telephony/ril.h | \
-     int RIL_UNSOL_LCEDATA_RECV = 1045;
-     int RIL_UNSOL_RESPONSE_ADN_INIT_DONE = 1046;
-     int RIL_UNSOL_RESPONSE_ADN_RECORDS = 1047;
-+
-+    int RIL_UNSOL_STK_SEND_SMS_RESULT = 11002; /* Samsung STK */
- }
--- 
-2.10.1
-
-
-From f20e66e4e8490efc5f00dece7b9cd431800f269a Mon Sep 17 00:00:00 2001
+From 0387263883603693c4480810bc692270008b4240 Mon Sep 17 00:00:00 2001
 From: Alex Sarraf <asarraf@codeaurora.org>
 Date: Wed, 15 Jul 2015 11:20:17 -0700
-Subject: [PATCH 4/5] KeyEvent: Add support for Home key wakeup
+Subject: [PATCH 3/5] KeyEvent: Add support for Home key wakeup
 
 Add Home key to list of wakeable buttons.
 
@@ -233,10 +178,10 @@ Change-Id: Ic452e4bf262301527f83d6dbd9bbaad7aa20a13e
  1 file changed, 1 insertion(+)
 
 diff --git a/core/java/android/view/KeyEvent.java b/core/java/android/view/KeyEvent.java
-index 05c7fbf..23e25db 100644
+index 934c6b23bff..5536e0e8802 100644
 --- a/core/java/android/view/KeyEvent.java
 +++ b/core/java/android/view/KeyEvent.java
-@@ -1855,6 +1855,7 @@ public class KeyEvent extends InputEvent implements Parcelable {
+@@ -1868,6 +1868,7 @@ public class KeyEvent extends InputEvent implements Parcelable {
          switch (keyCode) {
              case KeyEvent.KEYCODE_BACK:
              case KeyEvent.KEYCODE_MENU:
@@ -245,13 +190,13 @@ index 05c7fbf..23e25db 100644
              case KeyEvent.KEYCODE_PAIRING:
              case KeyEvent.KEYCODE_STEM_1:
 -- 
-2.10.1
+2.11.0
 
 
-From 0381127451483aafce3078daa4a669c01da8ab28 Mon Sep 17 00:00:00 2001
+From 249922023d0f959c1d98a24b445faf10b1c5c764 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Sat, 14 Mar 2015 22:53:50 +0700
-Subject: [PATCH 5/5] PowerManagerService: only turn on button light when any
+Subject: [PATCH 4/5] PowerManagerService: only turn on button light when any
  button is pressed
 
 This more closely emulates stock Samsung behavior
@@ -262,10 +207,10 @@ Change-Id: I6b15c45b713bcbc290a1026805c46109060f9990
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/services/core/java/com/android/server/power/PowerManagerService.java b/services/core/java/com/android/server/power/PowerManagerService.java
-index 18c337b..cead6ff 100644
+index 40a014f4ae1..655ccb4d793 100644
 --- a/services/core/java/com/android/server/power/PowerManagerService.java
 +++ b/services/core/java/com/android/server/power/PowerManagerService.java
-@@ -259,6 +259,7 @@ public final class PowerManagerService extends SystemService
+@@ -272,6 +272,7 @@ public final class PowerManagerService extends SystemService
      // Timestamp of the last call to user activity.
      private long mLastUserActivityTime;
      private long mLastUserActivityTimeNoChangeLights;
@@ -273,7 +218,7 @@ index 18c337b..cead6ff 100644
  
      // Timestamp of last interactive power hint.
      private long mLastInteractivePowerHintTime;
-@@ -1237,6 +1238,11 @@ public final class PowerManagerService extends SystemService
+@@ -1291,6 +1292,11 @@ public final class PowerManagerService extends SystemService
                      return true;
                  }
              } else {
@@ -285,7 +230,7 @@ index 18c337b..cead6ff 100644
                  if (eventTime > mLastUserActivityTime) {
                      mLastUserActivityTime = eventTime;
                      mDirty |= DIRTY_USER_ACTIVITY;
-@@ -1761,7 +1767,7 @@ public final class PowerManagerService extends SystemService
+@@ -1851,7 +1857,7 @@ public final class PowerManagerService extends SystemService
                              mKeyboardLight.setBrightness(mKeyboardVisible ?
                                      keyboardBrightness : 0);
                              if (mButtonTimeout != 0
@@ -295,5 +240,70 @@ index 18c337b..cead6ff 100644
                              } else {
                                  if (!mProximityPositive) {
 -- 
-2.10.1
+2.11.0
+
+
+From 2466a1cc0c32b363f5c43e845557caa4021cc584 Mon Sep 17 00:00:00 2001
+From: timduru <github@timduru.org>
+Date: Sat, 10 Sep 2016 11:51:15 +0200
+Subject: [PATCH 5/5] prevent MtpHost from crashing
+
+Change-Id: Id5235f8727668af52188c3263bca0714f1340854
+---
+ core/java/android/os/storage/IMountService.java                | 6 ++++--
+ core/java/android/os/storage/StorageManager.java               | 3 +++
+ packages/MtpDocumentsProvider/src/com/android/mtp/AppFuse.java | 6 ++++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/core/java/android/os/storage/IMountService.java b/core/java/android/os/storage/IMountService.java
+index 9f4b05cb4d4..6f6b559bbc0 100644
+--- a/core/java/android/os/storage/IMountService.java
++++ b/core/java/android/os/storage/IMountService.java
+@@ -2179,8 +2179,10 @@ public interface IMountService extends IInterface {
+                     data.enforceInterface(DESCRIPTOR);
+                     String name = data.readString();
+                     ParcelFileDescriptor fd = mountAppFuse(name);
+-                    reply.writeNoException();
+-                    reply.writeParcelable(fd, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
++                    if (fd != null) {
++                        reply.writeNoException();
++                        reply.writeParcelable(fd, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
++                    }
+                     return true;
+                 }
+             }
+diff --git a/core/java/android/os/storage/StorageManager.java b/core/java/android/os/storage/StorageManager.java
+index c5507b9841b..0c1dbf58234 100644
+--- a/core/java/android/os/storage/StorageManager.java
++++ b/core/java/android/os/storage/StorageManager.java
+@@ -1286,7 +1286,10 @@ public class StorageManager {
+             return mMountService.mountAppFuse(name);
+         } catch (RemoteException e) {
+             throw e.rethrowFromSystemServer();
++        } catch (Exception e) {
++            Log.d(TAG, "TTT mountAppFuse error: " + e.getMessage());
+         }
++        return null;
+     }
+ 
+     /// Consts to match the password types in cryptfs.h
+diff --git a/packages/MtpDocumentsProvider/src/com/android/mtp/AppFuse.java b/packages/MtpDocumentsProvider/src/com/android/mtp/AppFuse.java
+index cd78e610654..6c6bee11c5d 100644
+--- a/packages/MtpDocumentsProvider/src/com/android/mtp/AppFuse.java
++++ b/packages/MtpDocumentsProvider/src/com/android/mtp/AppFuse.java
+@@ -67,8 +67,10 @@ public class AppFuse {
+     void mount(StorageManager storageManager) throws IOException {
+         Preconditions.checkState(mDeviceFd == null);
+         mDeviceFd = storageManager.mountAppFuse(mName);
+-        mMessageThread = new AppFuseMessageThread(mDeviceFd.dup().detachFd());
+-        mMessageThread.start();
++        if (mDeviceFd != null) {
++            mMessageThread = new AppFuseMessageThread(mDeviceFd.dup().detachFd());
++            mMessageThread.start();
++        }
+     }
+ 
+     @VisibleForTesting
+-- 
+2.11.0
 

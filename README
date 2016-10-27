@@ -3,7 +3,7 @@ Scripts and patches to build ROMs for Samsung Galaxy S2 Plus, Samsung Galaxy Meg
 
 How to get:
 -------------
-Run "git clone https://github.com/ghsr/build_tools.git -b cm-13.0" in root of ROM sources directory.
+Run "git clone https://github.com/ghsr/build_tools.git -b cm-14.1" in root of ROM sources directory.
 
 Description of scripts:
 -------------

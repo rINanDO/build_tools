@@ -1,4 +1,4 @@
-From f79f7b5c0d1466d8422ef79b87d3aaa96415d224 Mon Sep 17 00:00:00 2001
+From bec56c14e56552717ca0f85e0db2a9e5c653a3ae Mon Sep 17 00:00:00 2001
 From: Dave Burke <daveburke@google.com>
 Date: Wed, 24 Oct 2012 17:30:31 -0700
 Subject: [PATCH 1/4] Revert "Revert "put back the unused virtuals in
@@ -27,7 +27,7 @@ Change-Id: I982e5f72ea4e84594e415394cceed44f90045526
  2 files changed, 47 insertions(+), 1 deletion(-)
 
 diff --git a/include/utils/VectorImpl.h b/include/utils/VectorImpl.h
-index 21ad71c..88c3a05 100644
+index 21ad71ce6..88c3a05d0 100644
 --- a/include/utils/VectorImpl.h
 +++ b/include/utils/VectorImpl.h
 @@ -105,7 +105,19 @@ protected:
@@ -71,7 +71,7 @@ index 21ad71c..88c3a05 100644
              ssize_t         _indexOrderOf(const void* item, size_t* order = 0) const;
  
 diff --git a/libutils/VectorImpl.cpp b/libutils/VectorImpl.cpp
-index e8d40ed..c149212 100644
+index e8d40ed20..c14921262 100644
 --- a/libutils/VectorImpl.cpp
 +++ b/libutils/VectorImpl.cpp
 @@ -556,6 +556,17 @@ void VectorImpl::_do_move_backward(void* dest, const void* from, size_t num) con
@@ -111,10 +111,10 @@ index e8d40ed..c149212 100644
  
  }; // namespace android
 -- 
-2.10.1
+2.11.0
 
 
-From 9faacad8e7cd6ba2d4a065bcd06fbcf68fe82acd Mon Sep 17 00:00:00 2001
+From 19f931f3f38e1259eed97f824406aa7471bc89ca Mon Sep 17 00:00:00 2001
 From: codeworkx <codeworkx@cyanogenmod.org>
 Date: Sat, 27 Jul 2013 08:18:42 +0200
 Subject: [PATCH 2/4] libutils: refbase: jellybean mr1 compat
@@ -129,7 +129,7 @@ Change-Id: Ideee0c3814a17b47f70fd612d27067fe19ae698d
  2 files changed, 16 insertions(+)
 
 diff --git a/include/utils/RefBase.h b/include/utils/RefBase.h
-index 14d9cb1..a1900cd 100644
+index 14d9cb12e..a1900cda0 100644
 --- a/include/utils/RefBase.h
 +++ b/include/utils/RefBase.h
 @@ -53,6 +53,15 @@ inline bool operator _op_ (const U* o) const {                  \
@@ -149,10 +149,10 @@ index 14d9cb1..a1900cd 100644
  protected:
      // destructor is purposedly not virtual so we avoid code overhead from
 diff --git a/libutils/RefBase.cpp b/libutils/RefBase.cpp
-index f90e28b..6068cf8 100644
+index 4ead19c11..a7425d424 100644
 --- a/libutils/RefBase.cpp
 +++ b/libutils/RefBase.cpp
-@@ -712,6 +712,13 @@ void RefBase::onLastWeakRef(const void* /*id*/)
+@@ -711,6 +711,13 @@ void RefBase::onLastWeakRef(const void* /*id*/)
  
  // ---------------------------------------------------------------------------
  
@@ -167,10 +167,10 @@ index f90e28b..6068cf8 100644
  void RefBase::renameRefs(size_t n, const ReferenceRenamer& renamer) {
      for (size_t i=0 ; i<n ; i++) {
 -- 
-2.10.1
+2.11.0
 
 
-From 5b2843a03d284e92a917b3614d7c91ccdeef02da Mon Sep 17 00:00:00 2001
+From 7ae372ec69d623737448c39f06899cb206649719 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Fri, 12 Apr 2013 11:40:15 +0700
 Subject: [PATCH 3/4] libnetutils: add ifc_set_mtu
@@ -181,10 +181,10 @@ Change-Id: I3031e9ee38583648350f2c46baa7a9a714b9ea1e
  1 file changed, 16 insertions(+)
 
 diff --git a/libnetutils/ifc_utils.c b/libnetutils/ifc_utils.c
-index 6c75045..085a4d3 100644
+index 7739cf459..a1ddb7b00 100644
 --- a/libnetutils/ifc_utils.c
 +++ b/libnetutils/ifc_utils.c
-@@ -738,3 +738,19 @@ ifc_configure(const char *ifname,
+@@ -737,3 +737,19 @@ ifc_configure(const char *ifname,
  
      return 0;
  }
@@ -205,10 +205,10 @@ index 6c75045..085a4d3 100644
 +    return ret;
 +}
 -- 
-2.10.1
+2.11.0
 
 
-From a1d296c13bc56df9694f45e044990a1b478bfe1e Mon Sep 17 00:00:00 2001
+From 284dbcf1f1b4003185a09cdeabd85bde86ac5f6d Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Sun, 11 Oct 2015 21:11:25 +0700
 Subject: [PATCH 4/4] init: temporarily change SELinux to permissive
@@ -218,7 +218,7 @@ Subject: [PATCH 4/4] init: temporarily change SELinux to permissive
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/init/init.cpp b/init/init.cpp
-index 61f4b7c..2784801 100755
+index 9992b4784..34dcc370a 100755
 --- a/init/init.cpp
 +++ b/init/init.cpp
 @@ -437,7 +437,7 @@ static void selinux_init_all_handles(void)
@@ -231,5 +231,5 @@ index 61f4b7c..2784801 100755
      import_kernel_cmdline(false, [&](const std::string& key, const std::string& value, bool in_qemu) {
          if (key == "androidboot.selinux" && value == "permissive") {
 -- 
-2.10.1
+2.11.0
 

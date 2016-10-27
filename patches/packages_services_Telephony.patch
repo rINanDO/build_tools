@@ -1,4 +1,4 @@
-From 37d36bf564a794a57867aa43ed11bae600f7731d Mon Sep 17 00:00:00 2001
+From 495f43814b33178961f8e18dcd960f5c3f153ea8 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Fri, 20 Feb 2015 20:26:52 +0700
 Subject: [PATCH 1/2] Telephony: HACK: enable WCDMA only setting
@@ -12,10 +12,10 @@ Change-Id: If552c6439f7b6910422ec5549e54e68da798c82e
  2 files changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/res/values/strings.xml b/res/values/strings.xml
-index 0d4ea51..eb18cf0 100644
+index e789a02a..751e5caf 100644
 --- a/res/values/strings.xml
 +++ b/res/values/strings.xml
-@@ -679,12 +679,14 @@
+@@ -704,12 +704,14 @@
      </string-array>
  
      <string-array name="enabled_networks_except_lte_choices" translatable="false">
@@ -34,10 +34,10 @@ index 0d4ea51..eb18cf0 100644
  
      <string-array name="enabled_networks_except_gsm_lte_choices" translatable="false">
 diff --git a/src/com/android/phone/MobileNetworkSettings.java b/src/com/android/phone/MobileNetworkSettings.java
-index cf18339..dfcab93 100644
+index 8766fb60..e97a6165 100644
 --- a/src/com/android/phone/MobileNetworkSettings.java
 +++ b/src/com/android/phone/MobileNetworkSettings.java
-@@ -876,6 +876,7 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -824,6 +824,7 @@ public class MobileNetworkSettings extends PreferenceActivity
                  switch (buttonNetworkMode) {
                      case Phone.NT_MODE_WCDMA_PREF:
                      case Phone.NT_MODE_GSM_ONLY:
@@ -45,7 +45,7 @@ index cf18339..dfcab93 100644
                      case Phone.NT_MODE_LTE_GSM_WCDMA:
                      case Phone.NT_MODE_LTE_CDMA_EVDO_GSM_WCDMA:
                      case Phone.NT_MODE_CDMA:
-@@ -1128,12 +1129,22 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -1076,12 +1077,22 @@ public class MobileNetworkSettings extends PreferenceActivity
                  mButtonEnabledNetworks.setSummary(R.string.network_3G);
                  break;
              case Phone.NT_MODE_WCDMA_ONLY:
@@ -69,7 +69,7 @@ index cf18339..dfcab93 100644
                  } else {
                      mButtonEnabledNetworks.setValue(
                              Integer.toString(Phone.NT_MODE_LTE_CDMA_EVDO_GSM_WCDMA));
-@@ -1144,7 +1155,7 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -1092,7 +1103,7 @@ public class MobileNetworkSettings extends PreferenceActivity
                  if (!mIsGlobalCdma) {
                      mButtonEnabledNetworks.setValue(
                              Integer.toString(Phone.NT_MODE_GSM_ONLY));
@@ -79,10 +79,10 @@ index cf18339..dfcab93 100644
                      mButtonEnabledNetworks.setValue(
                              Integer.toString(Phone.NT_MODE_LTE_CDMA_EVDO_GSM_WCDMA));
 -- 
-2.9.3
+2.11.0
 
 
-From a2f78ea67659741f4c9617f6e7ba67d27723aa29 Mon Sep 17 00:00:00 2001
+From 41b129b1916e4bfae3c021f42bde2a176c8df8e1 Mon Sep 17 00:00:00 2001
 From: Pawit Pornkitprasan <p.pawit@gmail.com>
 Date: Mon, 28 Dec 2015 19:37:32 +0700
 Subject: [PATCH 2/2] On create, values need to be read from the RIL, not set
@@ -117,10 +117,10 @@ other phones.
  1 file changed, 27 insertions(+), 3 deletions(-)
 
 diff --git a/src/com/android/phone/MobileNetworkSettings.java b/src/com/android/phone/MobileNetworkSettings.java
-index dfcab93..b709402 100644
+index e97a6165..4831dbff 100644
 --- a/src/com/android/phone/MobileNetworkSettings.java
 +++ b/src/com/android/phone/MobileNetworkSettings.java
-@@ -727,8 +727,7 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -669,8 +669,7 @@ public class MobileNetworkSettings extends PreferenceActivity
          UpdatePreferredNetworkModeSummary(settingsNetworkMode);
          UpdateEnabledNetworksValueAndSummary(settingsNetworkMode);
          // Display preferred network type based on what modem returns b/18676277
@@ -130,7 +130,7 @@ index dfcab93..b709402 100644
  
          /**
           * Enable/disable depending upon if there are any active subscriptions.
-@@ -935,7 +934,6 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -883,7 +882,6 @@ public class MobileNetworkSettings extends PreferenceActivity
              return true;
          }
  
@@ -138,7 +138,7 @@ index dfcab93..b709402 100644
          // always let the preference setting proceed.
          return true;
      }
-@@ -943,6 +941,7 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -891,6 +889,7 @@ public class MobileNetworkSettings extends PreferenceActivity
      private class MyHandler extends Handler {
  
          static final int MESSAGE_SET_PREFERRED_NETWORK_TYPE = 0;
@@ -146,7 +146,7 @@ index dfcab93..b709402 100644
  
          @Override
          public void handleMessage(Message msg) {
-@@ -950,6 +949,9 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -898,6 +897,9 @@ public class MobileNetworkSettings extends PreferenceActivity
                  case MESSAGE_SET_PREFERRED_NETWORK_TYPE:
                      handleSetPreferredNetworkTypeResponse(msg);
                      break;
@@ -156,7 +156,7 @@ index dfcab93..b709402 100644
              }
          }
  
-@@ -982,6 +984,28 @@ public class MobileNetworkSettings extends PreferenceActivity
+@@ -930,6 +932,28 @@ public class MobileNetworkSettings extends PreferenceActivity
                  updatePreferredNetworkUIFromDb();
              }
          }
@@ -186,5 +186,5 @@ index dfcab93..b709402 100644
  
      private void updatePreferredNetworkUIFromDb() {
 -- 
-2.9.3
+2.11.0
 
